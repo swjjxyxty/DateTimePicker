@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<div class="ui-datetime" id="J_popup_offdelay"></div>
+<div class="ui-datetime" id="datetime"></div>
 
 
 </body>
@@ -20,7 +20,7 @@
 <script>
 
     console.log(window.screen.width);
-    var datetime = new DateTime(document.getElementById("J_popup_offdelay"), null);
+    var datetime = new DateTime(document.getElementById("datetime"), null);
 
     datetime._init();
     datetime.bindEvent();
