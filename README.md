@@ -2,7 +2,9 @@
 
 Based on Javascript date picker.
 
+[http://blog.csdn.net/u012963788/article/details/52160333]
 
+[http://blog.csdn.net/u012963788/article/details/52160618]
 
 ##Image preview.
 
