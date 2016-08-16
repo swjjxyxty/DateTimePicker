@@ -237,7 +237,6 @@ DateTime.prototype = {
 
         });
 
-        console.log(_this.itemList);
     },
     _initDateConfig: function () {
         var _this = this;
@@ -477,15 +476,13 @@ DateTime.prototype = {
 
         var _this = this;
 
-        Math.abs(monthDay - e);
-
         if (_this.m) {
             if (e > monthDay) {
                 for (var index = monthDay; e > index; index++) {
-                    _this.d.list[index].insertBefore(_this.d.lihook);
+                    _this.d.ul.insertBefore(_this.d.list[index], _this.d.lihook);
                 }
             } else if (monthDay > e) {
-                for (var index2 = monthDay; monthDay > e; index2--) {
+                for (var index2 = monthDay; index2 > e; index2--) {
                     _this.d.list[index2 - 1].remove();
                 }
             }
@@ -515,9 +512,7 @@ DateTime.prototype = {
                         function o(time) {
                             time = time.split(" ");
                             var i = time[0].split("-");
-                            console.log(i);
                             var e = time[1].split(":");
-                            console.log(e);
                             return {
                                 y: parseInt(i[0]),
                                 m: parseInt(i[1]) - 1,
@@ -557,11 +552,9 @@ DateTime.prototype = {
                 }
             } else {
                 var r = _this._syncTime();
-                console.log(r);
                 n = 1;
             }
 
-            console.log("n", n);
 
             _this.itemList.forEach(function (key) {
                 if (_this[key]) {
@@ -575,10 +568,8 @@ DateTime.prototype = {
                     if (1 === n) {
                         item.value = r[key];
 
-                        console.log(item.value);
-
                         if ("m" === key) {
-                            item.rv = r.rm;
+                            item.rv = r.m;
                             item.index = getSelectedValueIndex(item.map, item.rv);
                             item.top = getTop(item.index);
                         } else {
@@ -630,25 +621,17 @@ DateTime.prototype = {
             if (_this[key]) {
 
                 var top = _this[key].top;
-                console.log(top);
 
                 var value = _this[key].map[Math.abs(top) / 40];
-
-                console.log(value);
 
                 time[key] = value;
 
                 if ("m" === key) {
                     time.rm = getSelectedValueIndex(_this[key].map, value);
-                    console.log(_this.rm);
-
                 }
-
-                time.m = time.rm - 1;
             }
 
         });
-
 
         return time;
 
@@ -682,19 +665,23 @@ DateTime.prototype = {
         });
 
         if (_this.m) {
-            var date = 32 - new Date(_this.y.value, _this.m.rv, 32).getDate();
 
+            var selectedDate = new Date();
+            selectedDate.setYear(_this.y.value);
+            selectedDate.setMonth(_this.m.rv);
+            selectedDate.setDate(0);
 
+            var monthDays = selectedDate.getDate();
             var day = _this.d;
 
-            if (_this.monthDay !== date) {
-                _this.correctDayHTML(_this.monthDay, date);
+            if (_this.monthDay !== monthDays) {
+                _this.correctDayHTML(_this.monthDay, monthDays);
                 day.xscroll.refresh();
-                day.scrollToIng = !0;
+                day.scrollToIng = true;
                 day.xscroll.scrollTo(0, top, 300, IScroll.utils.ease.circular);
 
             } else {
-                day.scrollToIng = !0;
+                day.scrollToIng = true;
                 day.xscroll.scrollTo(0, top, 300, IScroll.utils.ease.circular);
             }
         }
@@ -713,9 +700,16 @@ DateTime.prototype = {
         _this._setTime();
 
         if ("d" != key && _this.m) {
-            var date = 32 - new Date(_this.y.value, _this.m.rv, 32).getDate();
-            if (_this.monthDay !== date) {
-                _this.correctDayHTML(_this.monthDay, date);
+
+            var selectedDate = new Date();
+            selectedDate.setYear(_this.y.value);
+            selectedDate.setMonth(_this.m.rv);
+            selectedDate.setDate(0);
+
+            var monthDays = selectedDate.getDate();
+
+            if (_this.monthDay !== monthDays) {
+                _this.correctDayHTML(_this.monthDay, monthDays);
             }
             _this.d.xscroll.refresh();
         }

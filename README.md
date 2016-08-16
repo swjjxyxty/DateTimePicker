@@ -2,9 +2,13 @@
 
 Based on Javascript date picker.
 
-[http://blog.csdn.net/u012963788/article/details/52160333]
+博客教程:
 
-[http://blog.csdn.net/u012963788/article/details/52160618]
+[手把手教你写Js日期时间选择器(1)-基本结构](http://blog.csdn.net/u012963788/article/details/52160333)
+
+[手把手教你写Js日期时间选择器(2)-样式实现](http://blog.csdn.net/u012963788/article/details/52160618)
+
+[手把手教你写Js日期时间选择器(3)-让控件滑动起来](http://blog.csdn.net/u012963788/article/details/52197584)
 
 ##Image preview.
 
