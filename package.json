@@ -1,0 +1,29 @@
+{
+  "name": "datetime",
+  "version": "1.0.0",
+  "description": "datetimepicker",
+  "main": "datetime.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swjjxyxty/DateTiemPicker.git"
+  },
+  "keywords": [
+    "datetime"
+  ],
+  "author": "xty",
+  "license": "Apache",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-cssmin": "~0.5.0",
+    "grunt-contrib-uglify": "~0.5.0"
+  },
+  "bugs": {
+    "url": "https://github.com/swjjxyxty/DateTiemPicker/issues"
+  },
+  "homepage": "https://github.com/swjjxyxty/DateTiemPicker#readme"
+}
