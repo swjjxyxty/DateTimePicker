@@ -10,6 +10,15 @@ Based on Javascript date picker.
 
 [手把手教你写Js日期时间选择器(3)-让控件滑动起来](http://blog.csdn.net/u012963788/article/details/52197584)
 
+---
+在线演示地址:
+
+[在线演示](http://runjs.cn/detail/m0zy1iip)
+
+[在线演示全屏](http://sandbox.runjs.cn/show/m0zy1iip)
+
+[在线调试](http://runjs.cn/code/m0zy1iip)
+
 ##Image preview.
 
 
