@@ -1,26 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="43fdd423-010c-4784-9d0d-e7e87701d5ea" name="Default" comment="rebuild code.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
+    <list default="true" id="43fdd423-010c-4784-9d0d-e7e87701d5ea" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/backup/index.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/backup/jquery.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/backup/test.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/demo.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/demo_jquery.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dest/datetime.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dest/datetime.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/jQuery.datetimex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gruntfile.js" afterPath="$PROJECT_DIR$/Gruntfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dest/JQuery.datetime.js" afterPath="$PROJECT_DIR$/dest/JQuery.datetime.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dest/JQuery.datetime.min.js" afterPath="$PROJECT_DIR$/dest/JQuery.datetime.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backup/JQuery.datetime.js" afterPath="$PROJECT_DIR$/backup/JQuery.datetime.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backup/datetime.js" afterPath="$PROJECT_DIR$/backup/datetime.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/demo_jquery.html" afterPath="$PROJECT_DIR$/demo/demo_jquery.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jquery.html" afterPath="$PROJECT_DIR$/jquery.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/datetime.js" afterPath="$PROJECT_DIR$/src/datetime.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/JQuery.datetime.js" afterPath="$PROJECT_DIR$/backup/JQuery.datetime.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/datetime.js" afterPath="$PROJECT_DIR$/backup/datetime.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/jQuery.datetimex.js" afterPath="$PROJECT_DIR$/src/jQuery.datetime.js" />
     </list>
     <ignored path="DateTime.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -263,7 +251,7 @@
       <workItem from="1471435158411" duration="2855000" />
       <workItem from="1471480208804" duration="91000" />
       <workItem from="1471480389501" duration="1715000" />
-      <workItem from="1471491591861" duration="4182000" />
+      <workItem from="1471491591861" duration="4198000" />
     </task>
     <task id="LOCAL-00001" summary="init commit.">
       <created>1470539846031</created>
@@ -293,11 +281,18 @@
       <option name="project" value="LOCAL" />
       <updated>1471438092211</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="rebuild code.">
+      <created>1471497694428</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1471497694428</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38699000" />
+    <option name="totallyTimeSpent" value="38715000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -845,7 +840,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/jQuery.datetimex.js">
+    <entry file="file://$PROJECT_DIR$/src/jQuery.datetime.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
