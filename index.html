@@ -15,17 +15,41 @@
 <script src="src/datetime.js"></script>
 
 <script>
-    var time = new DateTime(document.getElementById("datetime"), null);
+    var time = new DateTime(document.getElementById("datetime"), {
+        type: 'datetime',//date,time,diy
+        date: new Date(),
+        minDate: new Date(),
+        maxDate: new Date(),
+        data: [{
+            key: 'day',
+            resource: ["上午", "下午"],
+            value: "上午",
+            unit: ''
+        }, {
+            key: 'hour',
+            resource: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+            value: "09",
+            unit: ''
+        }, {
+            key: 'minute',
+            resource: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"],
+            value: "05",
+            unit: ''
+        }],
+        onChange: function (data) {
+            console.log("call back", data);
+        }
+    });
 
     time.init();
 
-    setTimeout(function () {
-        time.hide();
-
-        setTimeout(function () {
-            time.show();
-        }, 2000);
-    }, 2000);
+//    setTimeout(function () {
+//        time.hide();
+//
+//        setTimeout(function () {
+//            time.show();
+//        }, 2000);
+//    }, 2000);
 
     console.log(time);
 </script>
