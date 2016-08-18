@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0 , maximum-scale=1.0, user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <title>Demo</title>
+    <link rel="stylesheet" href="../dest/datetime.min.css">
+</head>
+<body>
+<div class="ui-datetime" id="datetime"></div>
+<div class="ui-datetime" id="datetime2"></div>
+<div class="ui-datetime" id="datetime3"></div>
+<div class="ui-datetime" id="datetime4"></div>
+</body>
+<script src="../src/jquery.js"></script>
+<script src="../dest/JQuery.datetime.min.js"></script>
+
+<script>
+
+
+    $("#datetime").datetime({
+        type: 'diy',//date,time,diy
+        date: new Date(),
+        minDate: new Date(),
+        maxDate: new Date(),
+        gap: false,
+        demotion: false,
+        data: [{
+            key: 'day',
+            resource: ["上午", "下午"],
+            value: "上午",
+            unit: ''
+        }, {
+            key: 'hour',
+            resource: ["21", "22", "23", "01", "02", "03", "04", "05", "06", "07"],
+            value: "22",
+            unit: ''
+        }, {
+            key: 'minute',
+            resource: ["00", "30"],
+            value: "00",
+            unit: ''
+        }],
+        onChange: function (data) {
+            console.log("call back", data);
+        }
+    });
+    $("#datetime2").datetime({
+        type: 'date',//date,time,diy
+        date: new Date(),
+        minDate: new Date(),
+        maxDate: new Date(),
+        onChange: function (data) {
+            console.log("call back", data);
+        }
+    });
+
+    $("#datetime3").datetime({
+        type: 'time',//date,time,diy
+        date: new Date(),
+        onChange: function (data) {
+            console.log("call back", data);
+        }
+    });
+
+    $("#datetime4").datetime({
+        type: 'datetime',//date,time,diy
+        date: new Date(),
+        minDate: new Date(),
+        maxDate: new Date(),
+        onChange: function (data) {
+            console.log("call back", data);
+        }
+    });
+
+
+</script>
+</html>

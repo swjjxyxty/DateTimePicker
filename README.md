@@ -22,7 +22,7 @@ Based on Javascript date picker.
 include datatime.css file.
 
 	<script src="js/iscroll.js"></script>
-	<script src="js/datetime.js"></script>
+	<script src="js/datetimex.js"></script>
 
  	var datetime = new DateTime(document.getElementById("J_popup_offdelay"), null);
 
@@ -36,8 +36,8 @@ include datatime.css file.
 
 	<script src="js/jquery.js"></script>
 	<script src="js/iscroll.js"></script>
-	<script src="js/datetime.js"></script>
-	<script src="js/JQuery.datetime.js"></script>
+	<script src="js/datetimex.js"></script>
+	<script src="js/JQuery.datetimex.js"></script>
 	$("#J_popup_offdelay").datetime();
 
 
