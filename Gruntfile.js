@@ -7,14 +7,23 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         concat: {
             dist: {
+                src: ['src/iscroll.js', 'src/datetime.js'],
+                dest: 'dest/datetime.js'
+            },
+            dist_jquery: {
                 src: ['src/iscroll.js', 'src/datetime.js', 'src/JQuery.datetime.js'],
                 dest: 'dest/JQuery.datetime.js'
             }
         },
         uglify: {
-            my_target: {
+            target_jquery: {
                 files: {
                     'dest/JQuery.datetime.min.js': ['src/iscroll.js', 'src/datetime.js', 'src/JQuery.datetime.js']
+                }
+            },
+            target: {
+                files: {
+                    'dest/datetime.min.js': ['src/iscroll.js', 'src/datetime.js']
                 }
             }
         },
