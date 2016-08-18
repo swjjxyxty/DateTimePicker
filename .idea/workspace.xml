@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="43fdd423-010c-4784-9d0d-e7e87701d5ea" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/screenshot/demo.gif" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/screenshot/demo_all.gif" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/screenshot/demo_date.gif" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/screenshot/demo_datetime.gif" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/screenshot/demo_diy.gif" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/screenshot/demo_time.gif" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/datetime.js" afterPath="$PROJECT_DIR$/src/datetime.js" />
     </list>
     <ignored path="DateTime.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -128,6 +129,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DateTime" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DateTime" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="screenshot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -238,7 +253,7 @@
       <workItem from="1471480389501" duration="1715000" />
       <workItem from="1471491591861" duration="4405000" />
       <workItem from="1471498145840" duration="150000" />
-      <workItem from="1471517751222" duration="2619000" />
+      <workItem from="1471517751222" duration="2680000" />
     </task>
     <task id="LOCAL-00001" summary="init commit.">
       <created>1470539846031</created>
@@ -296,11 +311,18 @@
       <option name="project" value="LOCAL" />
       <updated>1471497883280</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="update readme.">
+      <created>1471520522908</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1471520522908</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41691000" />
+    <option name="totallyTimeSpent" value="41752000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -364,7 +386,8 @@
     <MESSAGE value="fix month select." />
     <MESSAGE value="add grunt build." />
     <MESSAGE value="rebuild code." />
-    <option name="LAST_COMMIT_MESSAGE" value="rebuild code." />
+    <MESSAGE value="update readme." />
+    <option name="LAST_COMMIT_MESSAGE" value="update readme." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
