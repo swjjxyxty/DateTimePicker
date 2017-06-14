@@ -41,13 +41,23 @@ var DateTime = function (ele, options) {
             }
 
         },
+        /**
+         * 获取组件数量
+         * @returns {number} 当前界面中的组件数量
+         */
         getDateTimeComponentCount = function () {
             return _dateTimeComponentCount++;
         },
-        validateSupportType = function (typeArr, type) {
+        /**
+         * 验证类型是否支持
+         * @param type 类型
+         * @returns {boolean} 支持的类型返回true,不支持返回false.
+         * @see #presetType
+         */
+        validateSupportType = function (type) {
 
             var support = false;
-            typeArr.forEach(function (internalType) {
+            presetType.forEach(function (internalType) {
                 if (internalType === type) {
                     support = true;
                 }
@@ -56,8 +66,14 @@ var DateTime = function (ele, options) {
 
             return support;
         },
+        /**
+         * 获取选中的值在数组中的索引
+         * @param arr 数组
+         * @param value 选中的值
+         * @returns {number} 如果选中的值在数组中存在则返回在数组中的位置,不存在返回-1.
+         */
         getSelectedValueIndex = function (arr, value) {
-            var selectedValue = 0;
+            var selectedValue = -1;
             var valueString = value ? value.toString() : "";
 
             arr.forEach(function (value, index) {
@@ -68,6 +84,12 @@ var DateTime = function (ele, options) {
 
             return selectedValue;
         },
+        /**
+         * 填充数组
+         * @param start 开始值
+         * @param count 填充数量
+         * @returns {Array} 数组.
+         */
         fillArr = function (start, count) {
 
             var arr = [];
@@ -78,33 +100,50 @@ var DateTime = function (ele, options) {
 
             return arr;
         },
+        /**
+         * 获取距离顶部的距离
+         * @param position 位置
+         * @returns {number} 距离顶部的距离
+         */
         getTop = function (position) {
+            //40为item的高度.
             return 0 - 40 * position;
         },
+        /**
+         * 创建一个dom节点
+         * @param html html内容
+         * @returns {Node} dom节点
+         */
         createDomElement = function (html) {
             var element = document.createElement("div");
             element.innerHTML = html;
-            return element.firstChild ? element.firstChild : !1
+            return element.firstChild;
         },
-        getDisplayedTime = function getDisplayedTime(date) {
+        /**
+         * 将date转换为指定格式的json对象.
+         * @param date date对象
+         * @returns {{h: *, i: *, s: *}}
+         * <pre>
+         *     {
+                h: DateUtils._h(date),
+                i: DateUtils._i(date),
+                s: DateUtils._s(date)
+                }
+         * </pre>
+         */
+        getDisplayedTime = function (date) {
 
             return {
                 h: DateUtils._h(date),
                 i: DateUtils._i(date),
-                s: DateUtils._s(date),
-                hasSecond: false
+                s: DateUtils._s(date)
             };
 
         },
         _initTimeConfig = function () {
             var timeConfig = getDisplayedTime(opts.date);
 
-            if (timeConfig.hasSecond) {
-                itemList = ["h", "i", "s"];
-            } else {
-                itemList = ["h", "i"];
-            }
-
+            itemList = ["h", "i", "s"];
 
             itemList.forEach(function (item) {
                 var disPlayedArr;
@@ -114,10 +153,11 @@ var DateTime = function (ele, options) {
                     disPlayedArr = fillArr(0, 59);
                 }
 
+                var selectedIndex = getSelectedValueIndex(disPlayedArr, timeConfig[item]);
                 picker[item] = {
-                    top: getTop(timeConfig[item] - 0),
+                    top: getTop(selectedIndex),
                     value: timeConfig[item],
-                    index: getSelectedValueIndex(disPlayedArr, timeConfig[item]),
+                    index: selectedIndex,
                     list: [],
                     map: disPlayedArr
                 };
@@ -125,6 +165,10 @@ var DateTime = function (ele, options) {
 
             });
         },
+        /**
+         * 初始化datetime类型的组件 年-月-日-时-分-秒
+         * @private
+         */
         _initDateTimeConfig = function () {
 
             var config = opts;
@@ -206,6 +250,10 @@ var DateTime = function (ele, options) {
             });
 
         },
+        /**
+         * 初始化<code>date</code>类型的组件
+         * @private
+         */
         _initDateConfig = function () {
 
             var config = opts;
@@ -221,14 +269,13 @@ var DateTime = function (ele, options) {
                 y: DateUtils._y(date),
                 m: DateUtils._m(date),
                 rm: DateUtils._rm(date),
-                d: DateUtils._d(date),
-                h: DateUtils._h(date),
-                i: DateUtils._i(date),
-                s: DateUtils._s(date)
+                d: DateUtils._d(date)
             };
 
+            //年-月-日
             itemList = ["y", "m", "d"];
 
+            //一个月有多少天.
             picker.monthDay = 32 - new Date(displayConfig.y, displayConfig.m, 32).getDate();
 
 
@@ -259,14 +306,19 @@ var DateTime = function (ele, options) {
                 st: 1,
                 et: 31,
                 list: [],
-                map: fillArr(1, 31)
+                map: fillArr(1, picker.monthDay)
             };
 
         },
+        /**
+         * 初始化自定义类型组件
+         * @private
+         */
         _initDiyConfig = function () {
 
             var config = opts;
 
+            //数据不为空
             if (config.data.length) {
                 var data = config.data;
 
@@ -297,10 +349,11 @@ var DateTime = function (ele, options) {
 
 
         },
+        /**
+         * 根据类型初始化组件内容.
+         */
         initConfigByType = function () {
             var type = opts.type;
-
-            console.log("init type-->", opts.type);
 
             switch (type) {
                 case"date":
@@ -363,6 +416,9 @@ var DateTime = function (ele, options) {
             return list;
 
         },
+        /**
+         * 渲染html内容
+         */
         renderHtml = function () {
 
 
@@ -422,6 +478,9 @@ var DateTime = function (ele, options) {
 
             domHook.appendChild(wrap);
         },
+        /**
+         * 绑定事件
+         */
         bindEvent = function () {
 
             itemList.forEach(function (key) {
@@ -450,7 +509,7 @@ var DateTime = function (ele, options) {
                             if (opts.onChange && "function" == typeof opts.onChange) {
                                 setTimeout(function () {
                                     var time = getTime();
-                                    opts.onChange(time);
+                                    opts.onChange.call(time);
                                 }, 0)
                             }
                         }
@@ -461,26 +520,40 @@ var DateTime = function (ele, options) {
             });
 
         },
-        correctDayHTML = function (monthDay, e) {
-
-            var _this = this;
+        /**
+         * 校正月份的日期.
+         * @param picker 选择器对象
+         * @param selectedMonthDay
+         */
+        correctDayHTML = function (picker, selectedMonthDay) {
+            var _this = picker;
+            var monthDay = picker.monthDay;
 
             if (_this.m) {
-                if (e > monthDay) {
-                    for (var index = monthDay; e > index; index++) {
+                if (selectedMonthDay > monthDay) {
+                    for (var index = monthDay; selectedMonthDay > index; index++) {
                         _this.d.ul.insertBefore(_this.d.list[index], _this.d.lihook);
                     }
-                } else if (monthDay > e) {
-                    for (var index2 = monthDay; index2 > e; index2--) {
+                } else if (monthDay > selectedMonthDay) {
+                    for (var index2 = monthDay; index2 > selectedMonthDay; index2--) {
                         _this.d.list[index2 - 1].remove();
                     }
+                    if (_this.d.value > selectedMonthDay) {
+                        _this.d.value = selectedMonthDay;
+                        syncStatus();
+                    }
                 }
-                _this.monthDay = e;
+                _this.monthDay = selectedMonthDay;
             }
 
         },
+        /**
+         * 判断对象是否为date类型
+         * @param date date对象
+         * @returns {boolean} 为date对象返回true.否则返回false
+         */
         isDate = function (date) {
-            return !!("object" == typeof date && date instanceof Date)
+            return "object" == typeof date && date instanceof Date
         },
         _setTime = function (time) {
 
@@ -489,59 +562,60 @@ var DateTime = function (ele, options) {
 
                 var n = 1;
 
-                if (time) {
-                    if (isDate(time)) {
-                        n = 2;
-                    } else if ("string" == typeof  time) {
-                        n = 3;
-                        if ("date" == opts.type) {
-
-
-                            function o(time) {
-                                time = time.split(" ");
-                                var i = time[0].split("-");
-                                var e = time[1].split(":");
-                                return {
-                                    y: parseInt(i[0]),
-                                    m: parseInt(i[1]) - 1,
-                                    rm: parseInt(i[1]),
-                                    d: parseInt(i[2]),
-                                    h: parseInt(e[0]),
-                                    i: parseInt(e[1]),
-                                    s: parseInt(e[2])
-                                }
-                            }
-
-                            var s = o(time);
-                        } else {
-                            function a(t) {
-                                currentDate = new Date;
-                                try {
-                                    t = t.split(":");
-                                    var i = !!t[2], e = parseInt(t[0], 10), n = parseInt(t[1], 10), s = 0;
-                                    return i && (s = parseInt(t[2], 10), s = s >= 0 && 60 > s ? s : sec(S)), e = e >= 0 && 24 > e ? e : hour(S), n = n >= 0 && 60 > n ? n : minu(S), {
-                                        h: e,
-                                        i: n,
-                                        s: s,
-                                        hasSecond: i
-                                    }
-                                } catch (o) {
-                                    return {
-                                        h: DateUtils._h(currentDate),
-                                        i: DateUtils._i(currentDate),
-                                        s: DateUtils._s(currentDate),
-                                        hasSecond: false
-                                    }
-                                }
-                            }
-
-                            var s = a(time);
-                        }
-                    }
-                } else {
-                    var r = _syncTime();
-                    n = 1;
-                }
+                // if (time) {
+                //     if (isDate(time)) {
+                //         n = 2;
+                //     } else if ("string" == typeof  time) {
+                //         n = 3;
+                //         if ("date" == opts.type) {
+                //
+                //
+                //             function o(time) {
+                //                 time = time.split(" ");
+                //                 var i = time[0].split("-");
+                //                 var e = time[1].split(":");
+                //                 return {
+                //                     y: parseInt(i[0]),
+                //                     m: parseInt(i[1]) - 1,
+                //                     rm: parseInt(i[1]),
+                //                     d: parseInt(i[2]),
+                //                     h: parseInt(e[0]),
+                //                     i: parseInt(e[1]),
+                //                     s: parseInt(e[2])
+                //                 }
+                //             }
+                //
+                //             var s = o(time);
+                //         } else {
+                //             function a(t) {
+                //                 currentDate = new Date;
+                //                 try {
+                //                     t = t.split(":");
+                //                     var i = !!t[2], e = parseInt(t[0], 10), n = parseInt(t[1], 10), s = 0;
+                //                     return i && (s = parseInt(t[2], 10), s = s >= 0 && 60 > s ? s : sec(S)), e = e >= 0 && 24 > e ? e : hour(S), n = n >= 0 && 60 > n ? n : minu(S), {
+                //                         h: e,
+                //                         i: n,
+                //                         s: s,
+                //                         hasSecond: i
+                //                     }
+                //                 } catch (o) {
+                //                     return {
+                //                         h: DateUtils._h(currentDate),
+                //                         i: DateUtils._i(currentDate),
+                //                         s: DateUtils._s(currentDate),
+                //                         hasSecond: false
+                //                     }
+                //                 }
+                //             }
+                //
+                //             var s = a(time);
+                //         }
+                //     }
+                // } else {
+                //     var r = _syncTime();
+                //     n = 1;
+                // }
+                var r = _syncTime();
 
 
                 itemList.forEach(function (key) {
@@ -553,40 +627,40 @@ var DateTime = function (ele, options) {
                             item.orv = item.rv;
                         }
 
-                        if (1 === n) {
-                            item.value = r[key];
+                        // if (1 === n) {
+                        item.value = r[key];
 
-                            if ("m" === key) {
-                                item.rv = r.m;
-                                item.index = getSelectedValueIndex(item.map, item.rv);
-                                item.top = getTop(item.index);
-                            } else {
-                                item.index = getSelectedValueIndex(item.map, item.value);
-                                item.top = getTop(item.index);
-                            }
-                        } else if (2 === n) {
-                            item.value = DateUtils["_" + key];
-
-                            if ("m" == key) {
-                                item.rv = DateUtils._rm(time);
-                                item.index = getSelectedValueIndex(item.map, item.rv);
-                                item.top = getTop(item.index);
-                            } else {
-                                item.index = getSelectedValueIndex(item.map, item.value);
-                                item.top = getTop(item.index);
-                            }
-
-                        } else if (3 === n) {
-                            item.value = s[key];
-                            if ("m" == key) {
-                                item.rv = s.rm;
-                                item.index = getSelectedValueIndex(item.map, item.rv);
-                                item.top = getTop(item.index);
-                            } else {
-                                item.index = getSelectedValueIndex(item.map, item.value);
-                                item.top = getTop(item.index);
-                            }
+                        if ("m" === key) {
+                            item.rv = r.m;
+                            item.index = getSelectedValueIndex(item.map, item.rv);
+                            item.top = getTop(item.index);
+                        } else {
+                            item.index = getSelectedValueIndex(item.map, item.value);
+                            item.top = getTop(item.index);
                         }
+                        // } else if (2 === n) {
+                        //     item.value = DateUtils["_" + key];
+                        //
+                        //     if ("m" == key) {
+                        //         item.rv = DateUtils._rm(time);
+                        //         item.index = getSelectedValueIndex(item.map, item.rv);
+                        //         item.top = getTop(item.index);
+                        //     } else {
+                        //         item.index = getSelectedValueIndex(item.map, item.value);
+                        //         item.top = getTop(item.index);
+                        //     }
+                        //
+                        // } else if (3 === n) {
+                        //     item.value = s[key];
+                        //     if ("m" == key) {
+                        //         item.rv = s.rm;
+                        //         item.index = getSelectedValueIndex(item.map, item.rv);
+                        //         item.top = getTop(item.index);
+                        //     } else {
+                        //         item.index = getSelectedValueIndex(item.map, item.value);
+                        //         item.top = getTop(item.index);
+                        //     }
+                        // }
 
                     }
 
@@ -599,6 +673,11 @@ var DateTime = function (ele, options) {
             }
 
         },
+        /**
+         * 获取当前界面选中的值
+         * @returns {{}}
+         * @private
+         */
         _syncTime = function () {
 
             var time = {};
@@ -661,7 +740,7 @@ var DateTime = function (ele, options) {
                 var day = picker.d;
 
                 if (picker.monthDay !== monthDays) {
-                    correctDayHTML(picker.monthDay, monthDays);
+                    correctDayHTML(picker, monthDays);
                     day.xscroll.refresh();
                     day.scrollToIng = true;
                     day.xscroll.scrollTo(0, top, 300, IScroll.utils.ease.circular);
@@ -673,19 +752,24 @@ var DateTime = function (ele, options) {
             }
 
         },
-        setData = function (time) {
+        setData = function () {
 
-            time || (time = _syncTime());
+            var time = _syncTime();
 
-            itemList.forEach(function (item) {
-                if (picker[item] && 0 !== time[item]) {
-                    var value = picker[item];
+            itemList.forEach(function (key) {
+                if (picker[key] && 0 !== time[key]) {
+                    var item = picker[key];
 
-                    value.ov = picker[item].value;
-                    value.value = time[item];
-                    value.index = getSelectedValueIndex(picker[item].map, value.value);
-                    value.oIndex = getSelectedValueIndex(picker[item].map, value.ov);
-                    value.top = getTop(value.index)
+                    //old value
+                    item.ov = picker[key].value;
+                    //current value
+                    item.value = time[key];
+                    //current value index
+                    item.index = getSelectedValueIndex(picker[key].map, item.value);
+                    //old value index
+                    item.oIndex = getSelectedValueIndex(picker[key].map, item.ov);
+                    //top offset.
+                    item.top = getTop(item.index)
 
                 }
 
@@ -695,6 +779,10 @@ var DateTime = function (ele, options) {
             syncScroll();
 
         },
+        /**
+         * 获取当前已经选中的值
+         * @returns {{}}
+         */
         getTime = function () {
 
             var time = {};
@@ -711,29 +799,29 @@ var DateTime = function (ele, options) {
             return time;
 
         },
+        /**
+         * 同步界面状态
+         */
         syncStatus = function () {
-
 
             itemList.forEach(function (key) {
                 if (picker[key]) {
 
                     var item = picker[key];
-
-                    var index, index2;
+                    var oldIndex, currentIndex;
 
                     if ("m" === key) {
-                        index = getSelectedValueIndex(item.map, item.orv);
-                        index2 = getSelectedValueIndex(item.map, item.rv);
+                        oldIndex = getSelectedValueIndex(item.map, item.orv);
+                        currentIndex = getSelectedValueIndex(item.map, item.rv);
                     } else {
-                        index = getSelectedValueIndex(item.map, item.ov);
-                        index2 = getSelectedValueIndex(item.map, item.value);
+                        oldIndex = getSelectedValueIndex(item.map, item.ov);
+                        currentIndex = getSelectedValueIndex(item.map, item.value);
                     }
 
-                    if (index != index2) {
-
-                        item.list[index].className = "";
-
-                        item.list[index2].className = "selected";
+                    //改变选中状态
+                    if (oldIndex != currentIndex) {
+                        item.list[oldIndex].className = "";
+                        item.list[currentIndex].className = "selected";
                     }
 
                 }
@@ -742,11 +830,15 @@ var DateTime = function (ele, options) {
             });
 
         },
+        /**
+         * 改变选中的值
+         * @param key
+         * @private
+         */
         _changeValue = function (key) {
 
             if (!picker.m && !picker.h) {
                 setData();
-
                 return;
             }
 
@@ -762,36 +854,47 @@ var DateTime = function (ele, options) {
                 var monthDays = selectedDate.getDate();
 
                 if (picker.monthDay !== monthDays) {
-                    correctDayHTML(picker.monthDay, monthDays);
+                    correctDayHTML(picker, monthDays);
                 }
                 picker.d.xscroll.refresh();
             }
+
 
         };
 
     picker.init = function () {
 
+        //生成id
         guid = getDateTimeComponentCount();
-
+        //如果没有提供高度则默认取200
         height = opts.height || "200";
-
-        isSupport = validateSupportType(presetType, opts.type);
+        //判断类型是否支持
+        isSupport = validateSupportType(opts.type);
 
         if (!isSupport) {
             console.error("unSupport type!");
             return;
         }
+        //根据类型初始化组件
         initConfigByType();
+        //渲染html内容
         renderHtml();
+        //绑定事件
         bindEvent();
     };
 
+    /**
+     * 显示组件
+     */
     picker.show = function () {
         if (domHook) {
             domHook.style.display = "block";
         }
     };
 
+    /**
+     * 隐藏组件
+     */
     picker.hide = function () {
         if (domHook) {
             domHook.style.display = "none";
@@ -804,6 +907,10 @@ var DateTime = function (ele, options) {
 
 };
 
+/**
+ * 默认选项
+ * @type {{type: string, date: Date, minDate: Date, maxDate: Date, data: *[], onChange: DateTime.defaultOpts.onChange}}
+ */
 DateTime.defaultOpts = {
     type: 'date',//date,time,diy
     date: new Date(),
