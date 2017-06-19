@@ -22,6 +22,7 @@ var DateTime = function (ele, options) {
         isSupport = false,
         guid,
         height,
+        lineHeight,
         currentDate,
         DateUtils = {
             _y: function (date) {
@@ -106,8 +107,8 @@ var DateTime = function (ele, options) {
          * @returns {number} 距离顶部的距离
          */
         getTop = function (position) {
-            //40为item的高度.
-            return 0 - 40 * position;
+            //lineHeight为item的高度.
+            return 0 - lineHeight * position;
         },
         /**
          * 创建一个dom节点
@@ -424,7 +425,7 @@ var DateTime = function (ele, options) {
 
             var wrap = createDomElement('<div class="ui-datetime-wrap" style="height: ' + height + 'px;"></div>');
 
-            var top = (height / 40 - 1) / 2 * 40;
+            var top = (height / lineHeight - 1) / 2 * lineHeight;
 
 
             var line = createDomElement('<div class="ui-datetime-line" style="top: ' + top + 'px;"></div>');
@@ -497,10 +498,10 @@ var DateTime = function (ele, options) {
 
                         var y = this.y;
 
-                        var offset = Math.round(y / 40);
+                        var offset = Math.round(y / lineHeight);
 
                         if (picker[key].top != y) {
-                            picker[key].top = 40 * offset;
+                            picker[key].top = lineHeight * offset;
 
                             _changeValue(key);
 
@@ -555,66 +556,12 @@ var DateTime = function (ele, options) {
         isDate = function (date) {
             return "object" == typeof date && date instanceof Date
         },
-        _setTime = function (time) {
+        _setTime = function () {
 
 
             if ("diy" != opts.type) {
 
-                var n = 1;
 
-                // if (time) {
-                //     if (isDate(time)) {
-                //         n = 2;
-                //     } else if ("string" == typeof  time) {
-                //         n = 3;
-                //         if ("date" == opts.type) {
-                //
-                //
-                //             function o(time) {
-                //                 time = time.split(" ");
-                //                 var i = time[0].split("-");
-                //                 var e = time[1].split(":");
-                //                 return {
-                //                     y: parseInt(i[0]),
-                //                     m: parseInt(i[1]) - 1,
-                //                     rm: parseInt(i[1]),
-                //                     d: parseInt(i[2]),
-                //                     h: parseInt(e[0]),
-                //                     i: parseInt(e[1]),
-                //                     s: parseInt(e[2])
-                //                 }
-                //             }
-                //
-                //             var s = o(time);
-                //         } else {
-                //             function a(t) {
-                //                 currentDate = new Date;
-                //                 try {
-                //                     t = t.split(":");
-                //                     var i = !!t[2], e = parseInt(t[0], 10), n = parseInt(t[1], 10), s = 0;
-                //                     return i && (s = parseInt(t[2], 10), s = s >= 0 && 60 > s ? s : sec(S)), e = e >= 0 && 24 > e ? e : hour(S), n = n >= 0 && 60 > n ? n : minu(S), {
-                //                         h: e,
-                //                         i: n,
-                //                         s: s,
-                //                         hasSecond: i
-                //                     }
-                //                 } catch (o) {
-                //                     return {
-                //                         h: DateUtils._h(currentDate),
-                //                         i: DateUtils._i(currentDate),
-                //                         s: DateUtils._s(currentDate),
-                //                         hasSecond: false
-                //                     }
-                //                 }
-                //             }
-                //
-                //             var s = a(time);
-                //         }
-                //     }
-                // } else {
-                //     var r = _syncTime();
-                //     n = 1;
-                // }
                 var r = _syncTime();
 
 
@@ -627,7 +574,6 @@ var DateTime = function (ele, options) {
                             item.orv = item.rv;
                         }
 
-                        // if (1 === n) {
                         item.value = r[key];
 
                         if ("m" === key) {
@@ -638,29 +584,6 @@ var DateTime = function (ele, options) {
                             item.index = getSelectedValueIndex(item.map, item.value);
                             item.top = getTop(item.index);
                         }
-                        // } else if (2 === n) {
-                        //     item.value = DateUtils["_" + key];
-                        //
-                        //     if ("m" == key) {
-                        //         item.rv = DateUtils._rm(time);
-                        //         item.index = getSelectedValueIndex(item.map, item.rv);
-                        //         item.top = getTop(item.index);
-                        //     } else {
-                        //         item.index = getSelectedValueIndex(item.map, item.value);
-                        //         item.top = getTop(item.index);
-                        //     }
-                        //
-                        // } else if (3 === n) {
-                        //     item.value = s[key];
-                        //     if ("m" == key) {
-                        //         item.rv = s.rm;
-                        //         item.index = getSelectedValueIndex(item.map, item.rv);
-                        //         item.top = getTop(item.index);
-                        //     } else {
-                        //         item.index = getSelectedValueIndex(item.map, item.value);
-                        //         item.top = getTop(item.index);
-                        //     }
-                        // }
 
                     }
 
@@ -688,7 +611,7 @@ var DateTime = function (ele, options) {
 
                     var top = picker[key].top;
 
-                    var value = picker[key].map[Math.abs(top) / 40];
+                    var value = picker[key].map[Math.abs(top) / lineHeight];
 
                     time[key] = value;
 
@@ -867,7 +790,8 @@ var DateTime = function (ele, options) {
         //生成id
         guid = getDateTimeComponentCount();
         //如果没有提供高度则默认取200
-        height = opts.height || "200";
+        height = opts.height || 200;
+        lineHeight = opts.lineHeight || 40;
         //判断类型是否支持
         isSupport = validateSupportType(opts.type);
 
