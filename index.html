@@ -15,8 +15,9 @@
 <script src="src/datetime.js"></script>
 
 <script>
+    LogUtils.enable();
     var time = new DateTime(document.getElementById("datetime"), {
-        type: 'datetime',//date,time,diy
+        type: 'date',//date,time,diy
         lineHeight: 40,
         date: new Date(),
         minDate: new Date(),
