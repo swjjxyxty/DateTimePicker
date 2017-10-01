@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="src/datetime.css">
 </head>
 <body>
-
+<button onclick="hideDiy()">hideDiy</button>
 <div class="ui-datetime" id="datetime"></div>
 <div class="ui-datetime" id="datetime2"></div>
 <div class="ui-datetime" id="datetime3"></div>
@@ -25,7 +25,7 @@
 <script>
 
 
-    $("#datetime").datetime({
+    var diy = $("#datetime").datetime({
         type: 'diy',//date,time,diy
         date: new Date(),
         minDate: new Date(),

@@ -57,18 +57,27 @@ function createDomElement(html) {
     element.innerHTML = html;
     return element.firstChild ? element.firstChild : !1
 }
-
+/**
+ * 将时间转换为指定的json格式.
+ * @param t 时间<code>date</code>对象
+ * @returns {{h: *, i: *, s: *}}
+ * <pre>
+ *     {
+        h: hour for date,
+        i: minute for date,
+        s: second for date
+    }
+ * </pre>
+ */
 function getDisplayedTime(t) {
 
     var date = t;
-    var result = {
+
+    return {
         h: DateUtils._h(date),
         i: DateUtils._i(date),
-        s: DateUtils._s(date),
-        hasSecond: false
+        s: DateUtils._s(date)
     };
-
-    return result;
 
 
 }

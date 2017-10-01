@@ -88,10 +88,8 @@ var ComponentUtils = (function () {
          */
         getSelectedValueIndex: function (arr, value) {
             var selectedValue = -1;
-            var valueString = value ? value.toString() : "";
-
-            arr.forEach(function (value, index) {
-                if (valueString === value.toString()) {
+            arr.forEach(function (arrValue, index) {
+                if (value === arrValue) {
                     selectedValue = index;
                 }
             });
@@ -154,7 +152,7 @@ var ComponentUtils = (function () {
             return "object" === typeof date && date instanceof Date
         },
         getDayOfMonth: function (y, m) {
-            return 32 - new Date(y, m, 32).getDate();
+            return 32 - new Date(y, m - 1, 32).getDate();
         }
     };
 
@@ -194,9 +192,9 @@ var DateTime = function (ele, options) {
         },
         _createItem: function (selected, value, unit) {
             if (selected) {
-                return this._createDomElement('<li class="selected">' + value + ' ' + unit + '</li>');
+                return this._createDomElement('<li class="item selected">' + value + ' ' + unit + '</li>');
             }
-            return this._createDomElement("<li>" + value + " " + unit + "</li>");
+            return this._createDomElement("<li class='item'>" + value + " " + unit + "</li>");
         },
         _resetItems: function (itemList) {
             var itemWidth = pickerArgs.opts.itemWidth | 80;
@@ -241,7 +239,10 @@ var DateTime = function (ele, options) {
                     item.htmlList.push(domItem);
                     domItemList.appendChild(domItem);
                 });
-                domItemList.appendChild(renderObj._createDomElement("<li></li>"));
+                var emptyLiHook = renderObj._createDomElement("<li></li>");
+                item.emptyLiHook = emptyLiHook;
+                item.listHook = domItemList;
+                domItemList.appendChild(emptyLiHook);
                 domItemList.appendChild(renderObj._createDomElement("<li></li>"));
 
                 wrapItem.appendChild(domItemList);
@@ -261,12 +262,87 @@ var DateTime = function (ele, options) {
                     this._initDateConfig();
                     break;
                 case"time":
+                    this._initTimeConfig();
                     break;
                 case"diy":
+                    this._initDiyConfig();
                     break;
                 case "datetime":
+                    this._initDateTimeConfig();
                     break;
             }
+        },
+        _getYearConfig: function (year, min, max) {
+            return {
+                top: ComponentUtils.getTop(pickerArgs.lineHeight, year - min),
+                value: year,
+                oldValue: year,
+                minValue: min,
+                maxValue: max,
+                htmlList: [],
+                valueMap: ComponentUtils.fillArr(min, max)
+            };
+        },
+        _getMonthConfig: function (month) {
+            return {
+                top: ComponentUtils.getTop(pickerArgs.lineHeight, month - 1),
+                value: month,
+                oldValue: month,
+                minValue: 1,
+                maxValue: 12,
+                htmlList: [],
+                valueMap: ComponentUtils.fillArr(1, 12)
+            };
+        },
+        _getDayConfig: function (day, dayOfMonth) {
+            return {
+                top: ComponentUtils.getTop(pickerArgs.lineHeight, day - 1),
+                value: day,
+                oldValue: day,
+                minValue: 1,
+                maxValue: dayOfMonth,
+                htmlList: [],
+                valueMap: ComponentUtils.fillArr(1, dayOfMonth)
+            };
+        },
+        _getHourConfig: function (hour) {
+            return {
+                top: ComponentUtils.getTop(pickerArgs.lineHeight, hour),
+                value: hour,
+                oldValue: hour,
+                htmlList: [],
+                valueMap: ComponentUtils.fillArr(0, 23)
+            };
+        },
+        _getMinuteConfig: function (minute) {
+            return {
+                top: ComponentUtils.getTop(pickerArgs.lineHeight, minute),
+                value: minute,
+                oldValue: minute,
+                htmlList: [],
+                valueMap: ComponentUtils.fillArr(0, 59)
+            };
+        },
+        _getSecondConfig: function (second) {
+            return {
+                top: ComponentUtils.getTop(pickerArgs.lineHeight, second),
+                value: second,
+                oldValue: second,
+                htmlList: [],
+                valueMap: ComponentUtils.fillArr(0, 59)
+            };
+        },
+        _getDiyConfig: function (key, value, valueMap) {
+            var diy = {
+                key: key,
+                value: value,
+                htmlList: [],
+                valueMap: valueMap
+            };
+
+            diy.index = ComponentUtils.getSelectedValueIndex(valueMap, value);
+            diy.top = ComponentUtils.getTop(pickerArgs.lineHeight, diy.index);
+            return diy;
         },
         _initDateConfig: function () {
             var config = pickerArgs.opts;
@@ -285,7 +361,6 @@ var DateTime = function (ele, options) {
 
             pickerArgs.itemList = ["year", "month", "day"];
 
-            //一个月有多少天.
             var dayOfMonth = ComponentUtils.getDayOfMonth(displayConfig.y, displayConfig.m);
             LogUtils.log("dayOfMonth= " + dayOfMonth);
 
@@ -320,6 +395,72 @@ var DateTime = function (ele, options) {
                 valueMap: ComponentUtils.fillArr(1, dayOfMonth)
             };
 
+        },
+        _initTimeConfig: function () {
+            var config = pickerArgs.opts;
+
+            var date = ComponentUtils.isDate(config.date) ? config.date : currentDate;
+            var displayConfig = {
+                h: DateUtils._h(date),
+                i: DateUtils._i(date),
+                s: DateUtils._s(date)
+
+            };
+            LogUtils.log(displayConfig);
+
+            pickerArgs.itemList = ["hour", "minute", "second"];
+
+            var dayOfMonth = ComponentUtils.getDayOfMonth(displayConfig.y, displayConfig.m);
+            LogUtils.log("dayOfMonth= " + dayOfMonth);
+
+            pickerArgs.dayOfMonth = dayOfMonth;
+            picker.hour = this._getHourConfig(displayConfig.h);
+            picker.minute = this._getMinuteConfig(displayConfig.i);
+            picker.second = this._getSecondConfig(displayConfig.s);
+        },
+        _initDiyConfig: function () {
+            var config = pickerArgs.opts;
+            //数据不为空
+            if (config.data) {
+                pickerArgs.itemList = [];
+                config.data.forEach(function (dataItem) {
+                    picker[dataItem.key] = render._getDiyConfig(dataItem.key, dataItem.value, dataItem.resource);
+                    ComponentDefine.dateLabels[dataItem.key] = dataItem.unit;
+                    pickerArgs.itemList.push(dataItem.key);
+                });
+            }
+        },
+        _initDateTimeConfig: function () {
+            var config = pickerArgs.opts;
+
+            var minYear = config.minDate.getFullYear();
+            var maxYear = config.maxDate.getFullYear();
+
+            var date = ComponentUtils.isDate(config.date) ? config.date : currentDate;
+
+            var displayConfig = {
+                y: DateUtils._y(date),
+                m: DateUtils._rm(date),
+                d: DateUtils._d(date),
+                h: DateUtils._h(date),
+                i: DateUtils._i(date),
+                s: DateUtils._s(date)
+
+            };
+            LogUtils.log(displayConfig);
+
+            pickerArgs.itemList = ["year", "month", "day", "hour", "minute", "second"];
+
+            var dayOfMonth = ComponentUtils.getDayOfMonth(displayConfig.y, displayConfig.m);
+            LogUtils.log("dayOfMonth= " + dayOfMonth);
+
+            pickerArgs.dayOfMonth = dayOfMonth;
+            picker.year = this._getYearConfig(displayConfig.y, minYear, maxYear);
+            picker.month = this._getMonthConfig(displayConfig.m);
+            picker.day = this._getDayConfig(displayConfig.d, dayOfMonth);
+            picker.hour = this._getHourConfig(displayConfig.h);
+            picker.minute = this._getMinuteConfig(displayConfig.i);
+            picker.second = this._getSecondConfig(displayConfig.s);
         }
     };
 
@@ -331,13 +472,7 @@ var DateTime = function (ele, options) {
                 var item = picker[key];
                 if (item) {
                     var top = item.top;
-                    var value = item.valueMap[Math.abs(top) / pickerArgs.lineHeight];
-                    LogUtils.log("top=" + top + ";value=" + value);
-                    valueObject[key] = value;
-                    if ("month" === key) {
-                        valueObject.realValue = ComponentUtils
-                            .getSelectedValueIndex(item.valueMap, value);
-                    }
+                    valueObject[key] = item.valueMap[Math.abs(top) / pickerArgs.lineHeight];
                 }
 
             });
@@ -357,25 +492,27 @@ var DateTime = function (ele, options) {
                 }
             })
         },
-        _syncValue: function (syncKey) {
+        _destroy: function () {
+            var itemList = pickerArgs.itemList;
+            itemList.forEach(function (key) {
+                var item = picker[key];
+                if (item && item.scroller) {
+                    item.scroller.destroy();
+                    item.scroller = null;
+                }
+            })
+        },
+        _syncValue: function () {
             var selectValue = valueHolder._getSelectValue();
-            LogUtils.log(selectValue);
             var itemList = pickerArgs.itemList;
             itemList.forEach(function (key) {
                 var item = picker[key];
                 if (item) {
-                    var isMonth = "month" === key;
                     item.oldValue = item.value;
                     item.value = selectValue[key];
 
-                    if (isMonth) {
-                        item.oldRealValue = item.realValue;
-                        item.realValue = selectValue.realValue;
-                    }
-
-                    item.index = ComponentUtils.getSelectedValueIndex(item.valueMap, isMonth ? item.realValue : item.value);
+                    item.index = ComponentUtils.getSelectedValueIndex(item.valueMap, item.value);
                     item.top = ComponentUtils.getTop(pickerArgs.lineHeight, item.index);
-                    LogUtils.log(item);
                 }
             });
 
@@ -387,11 +524,11 @@ var DateTime = function (ele, options) {
                 if (item) {
                     var oldIndex = ComponentUtils.getSelectedValueIndex(item.valueMap, item.oldValue);
                     var currentIndex = ComponentUtils.getSelectedValueIndex(item.valueMap, item.value);
-                    LogUtils.log("old index=" + oldIndex + ",new index =" + currentIndex);
+                    LogUtils.log("old index=" + oldIndex + ";current index=" + currentIndex);
                     //改变选中状态
                     if (oldIndex !== currentIndex) {
-                        item.htmlList[oldIndex].className = "";
-                        item.htmlList[currentIndex].className = "selected";
+                        item.htmlList[oldIndex].className = "item";
+                        item.htmlList[currentIndex].className = "item selected";
                     }
                 }
 
@@ -415,25 +552,60 @@ var DateTime = function (ele, options) {
             var changeCallback = pickerArgs.opts.onChange;
             if (changeCallback && "function" === typeof changeCallback) {
                 setTimeout(function () {
-                    changeCallback.call(this,valueHolder._getSelectValue());
+                    changeCallback.call(this, valueHolder._getSelectValue());
                 }, 0)
+            }
+        },
+        _fixDayOfMonth: function (syncKey) {
+            if ("month" === syncKey) {
+                var selectValue = valueHolder._getSelectValue();
+                var dayOfMonth = ComponentUtils.getDayOfMonth(selectValue.year, selectValue.month - 1);
+                LogUtils.log("day of month = " + dayOfMonth);
+                var currentDayOfMonth = pickerArgs.dayOfMonth;
+                LogUtils.log("current day of month = " + currentDayOfMonth);
+                if (currentDayOfMonth !== dayOfMonth) {
+                    var item = picker.day;
+                    item.valueMap = ComponentUtils.fillArr(1, dayOfMonth);
+                    if (dayOfMonth > currentDayOfMonth) {
+                        var selectIndex = ComponentUtils.getSelectedValueIndex(item.valueMap, item.value);
+                        var itemUnit = ComponentDefine.dateLabels["day"];
+
+                        for (var index = currentDayOfMonth; dayOfMonth > index; index++) {
+                            var newItem = render._createItem(selectIndex === index, item.valueMap[index], itemUnit);
+                            item.htmlList.push(newItem);
+                            item.listHook.insertBefore(newItem, item.emptyLiHook);
+                        }
+                    } else if (currentDayOfMonth > dayOfMonth) {
+                        var offset = currentDayOfMonth - dayOfMonth;
+                        for (var count = 0; count < offset; count++) {
+                            item.htmlList.pop().remove();
+                        }
+                        if (item.value > dayOfMonth) {
+                            item.oldValue = dayOfMonth - 1;
+                            item.value = dayOfMonth;
+                        }
+                    }
+
+                    pickerArgs.dayOfMonth = dayOfMonth;
+                }
+                picker.day.scroller.refresh();
             }
         },
         _bindItemEvent: function (item, key) {
             var scroller = this._createScroller(picker.guid, key);
+            scroller.key = key;
             scroller.scrollToIng = true;
             scroller.scrollTo(0, item.top, 0, IScroll.utils.ease.circular);
             var lineHeight = pickerArgs.lineHeight;
             var eventBinderObj = this;
             scroller.on("scrollEnd", function () {
                 var y = this.y;
-                LogUtils.log("y=" + y);
                 var offset = Math.round(y / lineHeight);
-                LogUtils.log("offset=" + offset);
                 if (item.top !== y) {
                     item.top = lineHeight * offset;
 
-                    eventBinderObj._syncValue(key);
+                    eventBinderObj._syncValue();
+                    eventBinderObj._fixDayOfMonth(key);
                     eventBinderObj._syncStatus();
                     eventBinderObj._syncScroll();
                     eventBinderObj._callChangeCallback();
@@ -443,7 +615,6 @@ var DateTime = function (ele, options) {
             item.scroller = scroller;
         },
         _createScroller: function (guid, key) {
-            LogUtils.log("id=" + guid + ";key=" + key);
             return new IScroll("#ui-datetime-" + guid + "-ad-" + key, {
                 bounceEasing: "ease",
                 bounceTime: 600
@@ -491,7 +662,10 @@ var DateTime = function (ele, options) {
         }
     };
 
-    picker.bindEvent = eventBinder._init;
+    picker.refreshEventBinder = function () {
+        eventBinder._destroy();
+        eventBinder._init();
+    };
 
     return picker;
 

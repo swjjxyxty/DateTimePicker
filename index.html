@@ -9,15 +9,19 @@
     <link rel="stylesheet" href="src/datetime.css">
 </head>
 <body>
+<button onclick="show()">show</button>
+<button onclick="hide()">hide</button>
+<button onclick="rebind()">rebind</button>
 <div class="ui-datetime" id="datetime"></div>
 </body>
+<!--<script src="src/iscroll-infinite.js"></script>-->
 <script src="src/iscroll.js"></script>
 <script src="src/datetime.js"></script>
 
 <script>
     LogUtils.enable();
     var time = new DateTime(document.getElementById("datetime"), {
-        type: 'date',//date,time,diy
+        type: 'diy',//date,time,diy
         lineHeight: 40,
         date: new Date(),
         minDate: new Date(),
@@ -44,6 +48,19 @@
     });
 
     time.init();
+    LogUtils.disable();
+
+    function show() {
+        time.show();
+    }
+
+    function hide() {
+        time.hide();
+    }
+
+    function rebind() {
+        time.refreshEventBinder();
+    }
 
     //    setTimeout(function () {
     //        time.hide();
