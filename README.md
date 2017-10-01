@@ -14,11 +14,11 @@
 ---
 在线演示地址:
 
-[在线演示](http://runjs.cn/detail/m0zy1iip)
+[在线演示](http://runjs.cn/detail/zu0k4vkm)
 
-[在线演示全屏](http://sandbox.runjs.cn/show/m0zy1iip)
+[在线演示全屏](http://sandbox.runjs.cn/show/zu0k4vkm)
 
-[在线调试](http://runjs.cn/code/m0zy1iip)
+[在线调试](http://runjs.cn/code/zu0k4vkm)
 
 ##预览.
 
@@ -52,7 +52,6 @@
 ```javascript
 	var datetime = new DateTime(document.getElementById("datetime"), null);
     datetime.init();
-    datetime.bindEvent();
 ```
 
 ---
@@ -201,15 +200,16 @@ var datetime = new DateTime(...);
 datetime.init();
 ```
 
-###3. bindEvent
+###3. refreshEventBinder
 
 为<code>DateTimePicker</code>绑定滑动事件.
-通常不需要调用此方法;因为在<code>DateTimePicker</code>内部已经调用
+通常不需要调用此方法;因为在<code>DateTimePicker</code>内部已经调用.
+>主要用于组件隐藏或者显示后可能出现事件不响应问题时重新绑定事件.新版本暂未发现此问题.
 
 
 ```javascript
 var datetime = new DateTime(...);
-datetime.bindEvent();
+datetime.refreshEventBinder();
 ```
 
 ###4. hide
@@ -228,4 +228,16 @@ datetime.hide();
 ```javascript
 var datetime = new DateTime(...);
 datetime.show();
+```
+
+##日志
+
+###打开日志
+```
+LogUtils.enable()
+```
+
+###关闭日志
+```
+LogUtils.disable()
 ```
